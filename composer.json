@@ -1,0 +1,25 @@
+{
+    "name": "pravodev/laramoud-installer",
+    "description": "An Installer plugin for laramoud module",
+    "type": "composer-plugin",
+    "authors": [
+        {
+            "name": "Rifqi Khoeruman Azam",
+            "email": "pravodev@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Pravodev\\Laramoud\\Installer\\": "src/"
+        }
+    },
+    "extra": {
+        "class": "Pravodev\\Laramoud\\Installer\\ModulePlugin"
+    },
+    "require": {
+        "composer-plugin-api": "^1.0"
+    },
+    "require-dev": {
+        "composer/composer": "^1.3"
+    }
+}
