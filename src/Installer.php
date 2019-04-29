@@ -28,18 +28,22 @@ class Installer extends LibraryInstaller
      */
     public function install($repo, $package)
     {
-        // $this->initializeVendorDir();
-        // $downloadPath = $this->getInstallPath($package);
-        // // remove the binaries if it appears the package files are missing
-        // if (!is_readable($downloadPath) && $repo->hasPackage($package)) {
-        //     $this->binaryInstaller->removeBinaries($package);
-        // }
-        var_dump(file_exists($this->getInstallPath($package) . '/'));
-        $this->installCode($package);
-        // $this->binaryInstaller->installBinaries($package, $this->getInstallPath($package));
-        // if (!$repo->hasPackage($package)) {
-        //     $repo->addPackage(clone $package);
-        // }
+        $this->initializeVendorDir();
+        $downloadPath = $this->getInstallPath($package);
+        // remove the binaries if it appears the package files are missing
+        if (!is_readable($downloadPath) && $repo->hasPackage($package)) {
+            $this->binaryInstaller->removeBinaries($package);
+        }
+
+        if($this->checkModuleExistsAndNotInstalled($package, $repo) == false){
+            throw new \Exception('asda');
+            $this->installCode($package);
+            $this->binaryInstaller->installBinaries($package, $this->getInstallPath($package));
+        }
+
+        if (!$repo->hasPackage($package)) {
+            $repo->addPackage(clone $package);
+        }
 
         // parent::install($repo, $package);
     }
@@ -96,5 +100,13 @@ class Installer extends LibraryInstaller
             'Unable to install module, module with name ' . $module['name']
             .' already installed '
         );
+    }
+
+    /**
+     * 
+     */
+    public function checkModuleExistsAndNotInstalled($package, $repo)
+    {
+        return file_exists($this->getInstallPath($package) . '/') && ($repo->hasPackage($package) == false);
     }
 }
