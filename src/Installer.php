@@ -71,7 +71,7 @@ class Installer extends LibraryInstaller
         }
 
         $name = $package->getPrettyName();
-        if(\preg_match('/'.$this->prefix.'\//')){
+        if(\preg_match('/'.$this->prefix.'\//', $name)){
             $name = str_replace($this->prefix, '', $name);
         }
 
