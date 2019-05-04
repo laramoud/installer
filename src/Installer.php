@@ -7,6 +7,8 @@ use Composer\Installer\LibraryInstaller;
 
 class Installer extends LibraryInstaller
 {
+    private $prefix = 'laramoud-module';
+    
     /**
      * 
      */
@@ -67,7 +69,13 @@ class Installer extends LibraryInstaller
         if(!empty($extra['laramoud']['name'])){
             return $extra['laramoud']['name'];
         }
-        return $package->getPrettyName();
+
+        $name = $package->getPrettyName();
+        if(\preg_match('/'.$this->prefix.'\//')){
+            $name = str_replace($this->prefix, '', $name);
+        }
+
+        return $name;
     }
 
     /**
