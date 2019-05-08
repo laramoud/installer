@@ -4,6 +4,8 @@ namespace Pravodev\Laramoud\Installer;
 
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
+use Composer\Repository\InstalledRepositoryInterface;
+
 
 class Installer extends LibraryInstaller
 {
@@ -38,7 +40,6 @@ class Installer extends LibraryInstaller
         }
 
         if($this->checkModuleExistsAndNotInstalled($package, $repo) == false){
-            throw new \Exception('asda');
             $this->installCode($package);
             $this->binaryInstaller->installBinaries($package, $this->getInstallPath($package));
         }
@@ -50,6 +51,26 @@ class Installer extends LibraryInstaller
         // parent::install($repo, $package);
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
+    {
+        if (!$repo->hasPackage($initial)) {
+            throw new \InvalidArgumentException('Package is not installed: '.$initial);
+        }
+
+        $this->initializeVendorDir();
+
+        $this->binaryInstaller->removeBinaries($initial);
+        $this->updateCode($initial, $target);
+        $this->binaryInstaller->installBinaries($target, $this->getInstallPath($target));
+        $repo->removePackage($initial);
+        if (!$repo->hasPackage($target)) {
+            $repo->addPackage(clone $target);
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
