@@ -1,7 +1,8 @@
 {
-    "name": "pravodev/laramoud-installer",
+    "name": "laramoud/installer",
     "description": "An Installer plugin for laramoud module",
     "type": "composer-plugin",
+    "license": "MIT",
     "authors": [
         {
             "name": "Rifqi Khoeruman Azam",
